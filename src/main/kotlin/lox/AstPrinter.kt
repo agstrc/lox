@@ -14,7 +14,7 @@ class AstPrinter : Expr.Visitor<String> {
     }
 
     override fun visitLiteralExpr(expr: Expr.Literal): String {
-        if (expr.value == null) return "nil"
+        expr.value ?: return "nil"
         return expr.value.toString()
     }
 

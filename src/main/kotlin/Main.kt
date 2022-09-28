@@ -1,4 +1,9 @@
+package main
+
+import lox.AstPrinter
+import lox.Parser
 import lox.Scanner
+import lox.Token
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -31,10 +36,12 @@ fun runPrompt() {
 
 fun runSource(source: String) {
     val tokens = Scanner(source).scanTokens()
+    val expression = Parser(tokens).parse()
 
-    for (token in tokens) {
-        println(token)
-    }
+    if (hadError) return
+    // if expression is null, hadError must be true. Therefore, it is safe to assume
+    // expression is not null here.
+    println(AstPrinter().print(expression!!))
 }
 
 fun error(line: Int, msg: String) {
@@ -45,4 +52,13 @@ fun error(line: Int, msg: String) {
 fun report(line: Int, where: String, message: String) {
     System.err.println("[line $line] Error$where: $message")
     hadError = true
+}
+
+
+fun error(token: Token, message: String) {
+    if (token.type == Token.Type.EOF) {
+        report(token.line, " at end", message)
+    } else {
+        report(token.line, " at '${token.lexeme}'", message)
+    }
 }

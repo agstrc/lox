@@ -1,6 +1,5 @@
 package lox
 
-import error
 import lox.Token.Type.*
 
 class Scanner(private val source: String) {
@@ -72,7 +71,7 @@ class Scanner(private val source: String) {
                 } else if (isAlpha(char)) {
                     identifier()
                 } else {
-                    error(line, "Unexpected character")
+                    main.error(line, "Unexpected character")
                 }
             }
         }
@@ -106,7 +105,7 @@ class Scanner(private val source: String) {
         }
 
         if (isAtEnd()) {
-            error(line, "Unterminated string")
+            main.error(line, "Unterminated string")
             return
         }
 
