@@ -1,13 +1,13 @@
 package main
 
-import lox.AstPrinter
-import lox.Parser
-import lox.Scanner
-import lox.Token
+import lox.*
 import java.io.File
 import kotlin.system.exitProcess
 
 private var hadError = false
+private var hadRuntimeError = false
+
+private val interpreter = Interpreter()
 
 fun main(args: Array<String>) {
     if (args.size > 1) {
@@ -23,6 +23,7 @@ fun main(args: Array<String>) {
 fun runFile(path: String) {
     runSource(File(path).readText())
     if (hadError) exitProcess(65)
+    if (hadRuntimeError) exitProcess(70)
 }
 
 fun runPrompt() {
@@ -39,15 +40,18 @@ fun runSource(source: String) {
     val expression = Parser(tokens).parse()
 
     if (hadError) return
-    // if expression is null, hadError must be true. Therefore, it is safe to assume
-    // expression is not null here.
-    println(AstPrinter().print(expression!!))
+    interpreter.interpret(expression!!)
 }
 
 fun error(line: Int, msg: String) {
     report(line, "", msg)
 }
 
+
+fun runtimeError(error: RuntimeError) {
+    println("${error.message}\n[line ${error.token.line}]")
+    hadRuntimeError = true
+}
 
 fun report(line: Int, where: String, message: String) {
     System.err.println("[line $line] Error$where: $message")
