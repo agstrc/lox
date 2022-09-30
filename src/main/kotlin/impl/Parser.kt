@@ -1,6 +1,6 @@
-package lox
+package lox.impl
 
-import lox.Token.Type.*
+import lox.impl.Token.Type.*
 
 class Parser(private val tokens: List<Token>) {
     private class ParseError : RuntimeException()
@@ -123,7 +123,7 @@ class Parser(private val tokens: List<Token>) {
     }
 
     private fun error(token: Token, message: String): ParseError {
-        main.error(token, message)
+        lox.error(token, message)
         return ParseError()
     }
 

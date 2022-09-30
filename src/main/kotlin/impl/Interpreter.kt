@@ -1,6 +1,6 @@
-package lox
+package lox.impl
 
-import lox.Token.Type.*
+import lox.impl.Token.Type.*
 
 class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
 
@@ -10,7 +10,7 @@ class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
             for (statement in statements)
                 execute(statement)
         } catch (error: RuntimeError) {
-            main.runtimeError(error)
+            lox.runtimeError(error)
         }
     }
 

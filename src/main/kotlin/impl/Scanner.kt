@@ -1,6 +1,6 @@
-package lox
+package lox.impl
 
-import lox.Token.Type.*
+import lox.impl.Token.Type.*
 
 class Scanner(private val source: String) {
     private val tokens: MutableList<Token> = ArrayList()
@@ -71,7 +71,7 @@ class Scanner(private val source: String) {
                 } else if (isAlpha(char)) {
                     identifier()
                 } else {
-                    main.error(line, "Unexpected character")
+                    lox.error(line, "Unexpected character")
                 }
             }
         }
@@ -105,7 +105,7 @@ class Scanner(private val source: String) {
         }
 
         if (isAtEnd()) {
-            main.error(line, "Unterminated string")
+            lox.error(line, "Unterminated string")
             return
         }
 

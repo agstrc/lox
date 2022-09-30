@@ -1,4 +1,4 @@
-package lox
+package lox.impl
 
 class AstPrinter : Expr.Visitor<String> {
     fun print(expr: Expr): String {

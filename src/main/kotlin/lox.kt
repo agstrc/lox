@@ -1,6 +1,6 @@
-package main
+package lox
 
-import lox.*
+import lox.impl.*
 import java.io.File
 import kotlin.system.exitProcess
 

@@ -1,4 +1,4 @@
-package lox
+package lox.impl
 
 data class Token(val type: Type, val lexeme: String, val literal: Any?, val line: Int) {
     enum class Type {

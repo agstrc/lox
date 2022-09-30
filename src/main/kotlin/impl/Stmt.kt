@@ -1,4 +1,4 @@
-package lox
+package lox.impl
 
 sealed class Stmt {
     interface Visitor<R> {
