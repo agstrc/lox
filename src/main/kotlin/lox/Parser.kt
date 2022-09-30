@@ -7,12 +7,12 @@ class Parser(private val tokens: List<Token>) {
 
     private var current = 0
 
-    fun parse(): Expr? {
-        return try {
-            expression()
-        } catch (error: ParseError) {
-            null
-        }
+    fun parse(): List<Stmt> {
+        val statements: MutableList<Stmt> = ArrayList()
+        while (!isAtEnd())
+            statements.add(statement())
+
+        return statements
     }
 
     private fun ruleMatcher(rule: () -> Expr, vararg types: Token.Type): () -> Expr {
@@ -30,6 +30,24 @@ class Parser(private val tokens: List<Token>) {
     }
 
     private fun expression(): Expr = equality()
+
+    private fun statement(): Stmt {
+        if (match(PRINT)) return printStatement()
+
+        return expressionStatement()
+    }
+
+    private fun printStatement(): Stmt {
+        val value = expression()
+        consume(SEMICOLON, "Expect ';' after value.")
+        return Stmt.Print(value)
+    }
+
+    private fun expressionStatement(): Stmt {
+        val expr = expression()
+        consume(SEMICOLON, "Expect ';' after expression.")
+        return Stmt.Expression(expr)
+    }
 
     private val equality = ruleMatcher({ comparison() }, BANG_EQUAL, EQUAL_EQUAL)
 

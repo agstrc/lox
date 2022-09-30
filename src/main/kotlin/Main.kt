@@ -37,10 +37,10 @@ fun runPrompt() {
 
 fun runSource(source: String) {
     val tokens = Scanner(source).scanTokens()
-    val expression = Parser(tokens).parse()
+    val statements = Parser(tokens).parse()
 
     if (hadError) return
-    interpreter.interpret(expression!!)
+    interpreter.interpret(statements)
 }
 
 fun error(line: Int, msg: String) {
